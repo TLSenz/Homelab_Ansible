@@ -1,0 +1,18 @@
+# GitLab Docker Compose Template
+# Paste your docker-compose.yml content here
+services:
+  gitlab:
+    image: 'gitlab/gitlab-ee:latest'
+    restart: always
+    hostname: 'gitlab.example.com'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.example.com'
+    ports:
+      - '80:80'
+      - '443:443'
+      - '22:22'
+    volumes:
+      - '{{ service_dest }}/config:/etc/gitlab'
+      - '{{ service_dest }}/logs:/var/log/gitlab'
+      - '{{ service_dest }}/data:/var/opt/gitlab'

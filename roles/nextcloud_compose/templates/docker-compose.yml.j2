@@ -1,0 +1,12 @@
+# Nextcloud Docker Compose Template
+# Paste your docker-compose.yml content here
+services:
+  nextcloud:
+    image: nextcloud
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - nextcloud:/var/www/html
+volumes:
+  nextcloud:

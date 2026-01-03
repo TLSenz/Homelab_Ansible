@@ -1,0 +1,3 @@
+---
+ansible_user: thalium
+backup_root: /tmp/backup

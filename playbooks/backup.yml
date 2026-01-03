@@ -1,0 +1,8 @@
+---
+- name: Backup tasks
+  hosts: all
+  tasks:
+    - name: Ensure backup directory exists
+      file:
+        path: /tmp/backup
+        state: directory

@@ -1,0 +1,13 @@
+# Vaultwarden Docker Compose Template
+# Paste your docker-compose.yml content here
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: always
+    environment:
+      - SIGNUPS_ALLOWED=false
+    volumes:
+      - "{{ service_dest }}/vw-data:/data"
+    ports:
+      - 80:80

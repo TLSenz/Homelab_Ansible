@@ -1,0 +1,7 @@
+# Immich Docker Compose Template
+# Paste your docker-compose.yml content here
+services:
+  immich-server:
+    container_name: immich_server
+    image: ghcr.io/immich-app/immich-server:{{ immich_version | default('release') }}
+    # ... placeholder

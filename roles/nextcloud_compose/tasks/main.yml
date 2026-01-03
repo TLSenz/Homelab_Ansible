@@ -1,0 +1,24 @@
+---
+- name: Ensure project directory exists
+  file:
+    path: "{{ service_dest }}"
+    state: directory
+    mode: '0755'
+
+- name: Template docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ service_dest }}/docker-compose.yml"
+    mode: '0644'
+
+- name: Run docker-compose
+  command: docker compose up -d
+  args:
+    chdir: "{{ service_dest }}"
+
+- name: Sync data to backup directory
+  synchronize:
+    src: "{{ data_dir }}/"
+    dest: "{{ backup_root }}/{{ ansible_role_name }}/"
+    archive: yes
+  delegate_to: "{{ inventory_hostname }}"

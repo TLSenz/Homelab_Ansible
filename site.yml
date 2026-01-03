@@ -1,0 +1,17 @@
+---
+- name: Common baseline
+  hosts: srv1:srv2
+  roles:
+    - docker
+
+- name: Photo-and-files box
+  hosts: nextcloud:immich:vaultwarden
+  roles:
+    - nextcloud_compose
+    - immich_compose
+    - vaultwarden_compose
+
+- name: Git server
+  hosts: gitlab
+  roles:
+    - gitlab_compose
