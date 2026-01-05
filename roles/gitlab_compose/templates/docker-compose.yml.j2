@@ -2,17 +2,16 @@
 # Paste your docker-compose.yml content here
 services:
   gitlab:
-    image: 'gitlab/gitlab-ee:latest'
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
     restart: always
-    hostname: 'gitlab.example.com'
-    environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'https://gitlab.example.com'
+    hostname: 'gitlab.thethalium.ch'
     ports:
-      - '80:80'
-      - '443:443'
-      - '22:22'
+      - '4080:80'
+      - '4443:443'
+      - '422:22'
     volumes:
-      - '{{ service_dest }}/config:/etc/gitlab'
-      - '{{ service_dest }}/logs:/var/log/gitlab'
-      - '{{ service_dest }}/data:/var/opt/gitlab'
+      - '/home/worker/config:/config/etc/gitlab'
+      - '/home/worker/log:/var/log/gitlab'
+      - '/home/worker/opt:/var/opt/gitlab'
+    shm_size: '256m'

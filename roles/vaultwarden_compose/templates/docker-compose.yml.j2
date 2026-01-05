@@ -1,13 +1,21 @@
-# Vaultwarden Docker Compose Template
-# Paste your docker-compose.yml content here
 services:
   vaultwarden:
     image: vaultwarden/server:latest
     container_name: vaultwarden
-    restart: always
-    environment:
-      - SIGNUPS_ALLOWED=false
-    volumes:
-      - "{{ service_dest }}/vw-data:/data"
+    restart: unless-stopped
     ports:
-      - 80:80
+     - 9445:80 #map any custom port to use (replace 9445 not 80)
+    volumes:
+     - /home/worker/bitwarden:/data:rw
+    environment:
+     - ROCKET_TLS_CERTS="/data/certs.pem"
+     - ROCKET_TLS_KEY="/data/key.pem"
+     - ADMIN_TOKEN=${ADMIN_TOKEN}
+     - WEBSOCKET_ENABLED=true
+     - SIGNUPS_ALLOWED=true
+
+#uncomment below network part if you are using Nginx Proxy Manager, or you can remove the same
+#networks:
+#  default:
+#    external:
+#      name: nginx-proxy-network

@@ -1,12 +1,48 @@
-# Nextcloud Docker Compose Template
-# Paste your docker-compose.yml content here
 services:
   nextcloud:
+    container_name: nextcloud
     image: nextcloud
-    restart: always
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=nextclouddb
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_HOST=db
+      - NEXTCLOUD_ADMIN_USER=ncadmin
+      - NEXTCLOUD_ADMIN_PASSWORD=N-nothalium.09
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_HOST_PASSWORD=nextcloud_redis_pass
     ports:
-      - 8080:80
+      - '5080:80'
+    depends_on:
+      - db
+      - redis
     volumes:
-      - nextcloud:/var/www/html
-volumes:
-  nextcloud:
+      - '/media/ncconfigs/data:/var/www/html'
+      - '/media/ncdata/external_data1:/mnt/data_main1'
+      - '/media/ncdata/external_data2:/mnt/data_main2'
+
+  db:
+    container_name: ncdb
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=nextclouddb
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+      - MYSQL_ROOT_PASSWORD=nextcloud
+    volumes:
+      - '/media/ncconfigs/mariadb:/var/lib/mysql'
+
+  redis:
+    container_name: ncredis
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --requirepass nextcloud_redis_pass
+
+networks:
+  default:
+    name: nextcloud
+    driver: bridge
+

@@ -11,6 +11,15 @@
     dest: "{{ service_dest }}/docker-compose.yml"
     mode: '0644'
 
+- name: Create Dirs for Immich
+  ansible.builtin.file:
+    path: "{{ home_dir }}"
+    state: directory
+    mode: '0777'
+  loop:
+    - {{home_dir}}/postgres
+    - {{home_dir}}/immich
+
 - name: Run docker-compose
   command: docker compose up -d
   args:

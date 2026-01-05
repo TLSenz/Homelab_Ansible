@@ -11,6 +11,14 @@
     dest: "{{ service_dest }}/docker-compose.yml"
     mode: '0644'
 
+- name: Create Dirs for Gitlab
+  ansible.builtin.file:
+    path: "/"
+    state: directory
+    mode: '0777'
+  loop:
+    - /home/worker/bitwarden
+
 - name: Run docker-compose
   command: docker compose up -d
   args:
